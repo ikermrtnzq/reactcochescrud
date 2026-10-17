@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import ServiceCoches from '../services/ServiceCoches'
 import { NavLink } from 'react-router-dom'
+import DetalleCoche from './DetalleCoche';
 
 export default class Home extends Component {
     state= {
         coches:[],
         status: false,
-        coche: null
+        coche: null,
+        idDetalle: 0
     }
 
     service = new ServiceCoches();
@@ -16,17 +18,19 @@ export default class Home extends Component {
             coches:datos
         })
     }
-    obtenerCoche = async(id) =>{
-        let datos = await this.service.obtenerCoche(id)
-        console.log(datos)
+    mostrarDetalle = (id) => {
         this.setState({
-            coche : datos
+            idDetalle : id,
+            status: true
         })
+
     }
+    
 
     componentDidMount = async() => {
         await this.obtenerCoches();
     }
+
     render() {
         return (
             <div className="m-[30px]">
@@ -72,7 +76,7 @@ export default class Home extends Component {
                                             />
                                         </td>
                                         <td className="p-[10px] border border-[#D3D3D3]">
-                                            <button onClick={()=>{this.obtenerCoche(coche.idCoche)}}  className="inline-block bg-[#FFC5D3] hover:bg-pink-300 rounded-md px-3 py-2 transition-colors">
+                                            <button onClick={()=>{this.mostrarDetalle(coche.idCoche)}}  className="inline-block bg-[#FFC5D3] hover:bg-pink-300 rounded-md px-3 py-2 transition-colors">
                                                 Detalle
                                             </button>
                                         </td>
@@ -91,43 +95,8 @@ export default class Home extends Component {
                             })}
                         </tbody>
                     </table>
-                            {this.state.coche != null &&
-                                (
-                                    <table className="mx-auto rounded-[10px] border-collapse text-center">
-                                        <thead>
-                                            <tr>
-                                                <th className="bg-[#FFC5D3] p-[10px] border border-[#FFC5D3] border-b-[#D3D3D3]">Numero</th>
-                                                <th className="bg-[#FFC5D3] p-[10px] border border-[#FFC5D3] border-b-[#D3D3D3]">Marca</th>
-                                                <th className="bg-[#FFC5D3] p-[10px] border border-[#FFC5D3] border-b-[#D3D3D3]">Modelo</th>
-                                                <th className="bg-[#FFC5D3] p-[10px] border border-[#FFC5D3] border-b-[#D3D3D3]">Conductor</th>
-                                                <th className="bg-[#FFC5D3] p-[10px] border border-[#FFC5D3] border-b-[#D3D3D3]">Imagen</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr  className="hover:bg-pink-50 transition-colors">
-                                                <td className="p-[10px] border border-[#D3D3D3]">
-                                                    {this.state.coche.idCoche}
-                                                </td>
-                                                <td className="p-[10px] border border-[#D3D3D3]">
-                                                    {this.state.coche.marca}
-                                                </td>
-                                                <td className="p-[10px] border border-[#D3D3D3]">
-                                                    {this.state.coche.modelo}
-                                                </td>
-                                                <td className="p-[10px] border border-[#D3D3D3]">
-                                                    {this.state.coche.idCoche}
-                                                </td>
-                                                <td className="p-[10px] border border-[#D3D3D3]">
-                                                    <img
-                                                        src={this.state.coche.imagen}
-                                                        className="w-24 h-16 object-cover rounded-md mx-auto"
-                                                    />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                )
+                            {this.state.status &&
+                                (<DetalleCoche id={this.state.idDetalle}/>)
                             }
                 </div>
             </div>

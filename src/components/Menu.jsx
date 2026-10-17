@@ -21,22 +21,6 @@ export default class Menu extends Component {
                                 Home
                             </NavLink>
                         </li>
-
-                        <li>
-                            <NavLink
-                                to="/update"
-                                className={({ isActive }) =>
-                                    `rounded-md px-4 py-2 font-medium transition-colors duration-200 ${
-                                        isActive
-                                            ? 'bg-blue-600 text-white'
-                                            : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                                    }`
-                                }
-                            >
-                                Update
-                            </NavLink>
-                        </li>
-
                         <li>
                             <NavLink
                                 to="/insert"
